@@ -4,7 +4,7 @@ const User = require('../models/user');
 
 const putUsers = async (req, res = response) => {
   const { id } = req.params;
-  const { _id, password, google, email, ...rest } = req.body;
+  const { _id, password, email, ...rest } = req.body;
 
   if (password) {
     const salt = bcryptjs.genSaltSync();
