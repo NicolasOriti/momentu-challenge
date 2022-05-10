@@ -8,12 +8,12 @@ const generateJWT = (uid = '') => {
       payload,
       process.env.SECRET_OR_PRIVATE_KEY,
       {
-        expiresIn: '3h',
+        expiresIn: '8h',
       },
       (err, token) => {
         if (err) {
           console.log(err);
-          reject('generate token failed');
+          reject('Token do not generate');
         } else {
           resolve(token);
         }

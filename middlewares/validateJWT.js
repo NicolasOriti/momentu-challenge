@@ -1,4 +1,4 @@
-const { request, response } = require('express');
+const { response, request } = require('express');
 const jwt = require('jsonwebtoken');
 
 const User = require('../models/user');
@@ -8,33 +8,33 @@ const validateJWT = async (req = request, res = response, next) => {
 
   if (!token) {
     return res.status(401).json({
-      msg: 'token not found',
+      msg: 'There is no token in the request',
     });
   }
 
   try {
     const { uid } = jwt.verify(token, process.env.SECRET_OR_PRIVATE_KEY);
+
     const user = await User.findById(uid);
 
     if (!user) {
       return res.status(401).json({
-        msg: 'Invalid token - user not exist',
+        msg: 'Invalid token - user not exist in DB',
       });
     }
 
     if (!user.state) {
       return res.status(401).json({
-        msg: 'Invalid token - state user : false',
+        msg: 'Invalid token - user with state: false',
       });
     }
 
     req.user = user;
-
     next();
   } catch (error) {
     console.log(error);
     res.status(401).json({
-      msg: 'invalid token',
+      msg: 'Invalid token',
     });
   }
 };
